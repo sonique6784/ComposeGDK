@@ -12,14 +12,12 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.key.*
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.mutableStateOf
 import org.openrndr.math.Vector2
 import java.time.Instant
 import kotlin.math.absoluteValue
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.IntSize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +26,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableSharedFlow
 import java.util.*
-import kotlin.coroutines.CoroutineContext
 
 
 val GAME_SIZE = IntSize(480.dp.value.toInt(), 320.dp.value.toInt())
@@ -243,11 +240,61 @@ interface IKeyboardHandler {
     fun handleKey(event: KeyEvent): Boolean
 }
 
-class KeyboardMovementHelper(
+
+interface IFourActionGameController {
+    fun left()
+    fun right()
+    fun up()
+    fun down()
+    fun a()
+    fun b()
+    fun x()
+    fun y()
+}
+
+interface ITwoActionGameController {
+    fun left()
+    fun right()
+    fun up()
+    fun down()
+    fun a()
+    fun b()
+}
+
+
+interface IDirectionGameController {
+    fun left()
+    fun right()
+    fun up()
+    fun down()
+}
+
+class DirectionGameController(
     private val leftCallback: () -> Unit,
     private val rightCallback: () -> Unit,
     private val upCallback: () -> Unit,
     private val downCallback: () -> Unit,
+) : IDirectionGameController {
+    override fun left() {
+        leftCallback.invoke()
+    }
+
+    override fun right() {
+        rightCallback.invoke()
+    }
+
+    override fun up() {
+        upCallback.invoke()
+    }
+
+    override fun down() {
+        downCallback.invoke()
+    }
+}
+
+
+class KeyboardDirectionControllerHelper(
+    private val directionGameController: IDirectionGameController
 ) : IKeyboardHandler {
 
     @ExperimentalComposeUiApi
@@ -268,22 +315,22 @@ class KeyboardMovementHelper(
 
     private fun isLeft() {
         print("Left\n")
-        leftCallback.invoke()
+        directionGameController.left()
     }
 
     private fun isRight() {
         print("Right\n")
-        rightCallback.invoke()
+        directionGameController.right()
     }
 
     private fun isUp() {
         print("Up\n")
-        upCallback.invoke()
+        directionGameController.up()
     }
 
     private fun isDown() {
         print("Down\n")
-        downCallback.invoke()
+        directionGameController.down()
     }
 }
 

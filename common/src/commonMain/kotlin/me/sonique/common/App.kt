@@ -3,7 +3,6 @@ package me.sonique.common
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.Text
-import androidx.compose.material.Button
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
@@ -67,9 +66,9 @@ pointerMoveFilter(onMove = {
                 false
             })
  */
-        GameCanvas(
-            modifier = Modifier, backgroundColor = Color(161, 174, 253),
-            keyboardHandler = KeyboardMovementHelper(leftCallback = {
+
+        val directionGameController = DirectionGameController(
+            leftCallback = {
                 horizontalCharacterScroll.direction = HorizontalScroll.Direction.LEFT
                 horizontalCharacterScroll.distanceToMove()
             }, rightCallback = {
@@ -82,6 +81,9 @@ pointerMoveFilter(onMove = {
                 verticalCharacterScroll.direction = VerticalScroll.Direction.DOWN
                 verticalCharacterScroll.distanceToMove()
             })
+        GameCanvas(
+            modifier = Modifier, backgroundColor = Color(161, 174, 253),
+            keyboardHandler = KeyboardDirectionControllerHelper(directionGameController)
         ) {
 
 //                horizontalFrontScroll.positionX.value.dp
@@ -94,7 +96,7 @@ pointerMoveFilter(onMove = {
 
 
             game.gameObjects.forEach {
-                when(it) {
+                when (it) {
                     is ImageGameObject -> GameImage(it)
                     else -> Unit
                 }
