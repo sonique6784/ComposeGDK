@@ -58,8 +58,8 @@ class ScoreManager() {
 
 
 class Wall() : ImageGameObject(
-    imageFileName = "wall.jpg",
-    size = Vector2(50.dp.value.toDouble(), 50.dp.value.toDouble())
+    imageFileName = "box.jpg",
+    size = Vector2(25.dp.value.toDouble(), 25.dp.value.toDouble())
 ), OnCollision {
     private val mainScope = CoroutineScope(Dispatchers.Main)
     override fun onCollision(object2: GameObject2) {
@@ -70,6 +70,24 @@ class Wall() : ImageGameObject(
     }
 }
 
+
+// Extension func
+fun Vector2.lower(distanceY: Int): Vector2 {
+    return Vector2(this.x, this.y + distanceY)
+}
+fun Vector2.higher(distanceY: Int): Vector2 {
+    return Vector2(this.x, this.y - distanceY)
+}
+
+fun Vector2.leftShift(distanceX: Int): Vector2 {
+    return Vector2(this.x - distanceX, this.y)
+}
+
+fun Vector2.rightShift(distanceX: Int): Vector2 {
+    return Vector2(this.x + distanceX, this.y)
+}
+
+
 class MyGame : Game2() {
 
     val placementHelper = Placement(GAME_SIZE.toVector2())
@@ -77,8 +95,8 @@ class MyGame : Game2() {
     val horizontalCharacterScroll = HorizontalKeyboardScroll(speed = 7)
     val verticalCharacterScroll = VerticalKeyboardScroll(speed = 7)
     val horizontalFrontScroll = HorizontalAutoScroll(speed = 7)
-    val horizontalMediumScroll = HorizontalKeyboardScroll(speed = 5)
-    val horizontalBackScroll = HorizontalKeyboardScroll(speed = 2)
+    val horizontalMediumScroll = HorizontalAutoScroll(speed = 5)
+    val horizontalBackScroll = HorizontalAutoScroll(speed = 2)
 
     val score = mutableStateOf(0)
 
@@ -87,7 +105,7 @@ class MyGame : Game2() {
         val floor = ImageGameObject(
             imageFileName = "floor.jpg",
             isTexture = true,
-            size = Vector2(6000.dp.value.toDouble(), 50.dp.value.toDouble())
+            size = Vector2(6000.dp.value.toDouble(), 25.dp.value.toDouble())
         )
         floor.mutablePosition.value = placementHelper.toBottomLeft(floor)
         horizontalFrontScroll.addObject(floor)
@@ -119,20 +137,24 @@ class MyGame : Game2() {
         this.addGObject(cloud3)
 
         val box = ImageGameObject(
-            imageFileName = "box.jpg",
-            size = Vector2(1000.dp.value.toDouble(), 25.dp.value.toDouble())
+            imageFileName = "wall.jpg",
+            size = Vector2(25.dp.value.toDouble(), 25.dp.value.toDouble())
         )
         box.mutablePosition.value = Vector2(100.dp.value.toDouble(), 100.dp.value.toDouble())
         horizontalFrontScroll.addObject(box)
         this.addGObject(box)
 
         val wall = Wall()
-        wall.mutablePosition.value = placementHelper.toCenterRight(wall)
+        val centerRight = placementHelper.toCenterRight(wall).minY(40)
+        wall.mutablePosition.value = centerRight //Vector2(centerRight.x, centerRight.y + 40)
         horizontalFrontScroll.addObject(wall)
         this.addGObject(wall)
 
-        val grass = GameObject2(size = Vector2(100.dp.value.toDouble(), 50.dp.value.toDouble()))
-        grass.mutablePosition.value = placementHelper.toBottomRight(grass)
+        val grass =  ImageGameObject(
+            imageFileName = "grass.jpg",
+            size = Vector2(100.dp.value.toDouble(), 25.dp.value.toDouble())
+            )
+        grass.mutablePosition.value = placementHelper.toBottomCenter(grass)
         grass.mutablePosition.value = placementHelper.putObjectAOnTopB(grass, floor)
         horizontalMediumScroll.addObject(grass)
         this.addGObject(grass)

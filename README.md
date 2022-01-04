@@ -33,6 +33,7 @@ $ ./gradlew installDebug
 - [ 40%] Keyboard support
 - [ 10%] Score system
 - [  0%] Touch Controller support (Touch screen joystick)
+- [  0%] Animated object (multiple image for 1 GO)
 - [  0%] Play/pause
 - [  0%] Save mechanism
 - [  0%] Multi-player (2 people with 1 keyboard, MacOS only)
@@ -44,3 +45,21 @@ $ ./gradlew installDebug
 - [  0%] Accelerometer support
 
 
+# Main principles
+## GameObject
+the most simplest object is GameObject, it has coordinates and size, this can be extended to place more complexe object on the screen, such as GameImage.
+
+## GameCanvas
+The GameObjects are placed on the Game Canvas
+
+## Animation / Scroll
+Both Horizontal and Vertical scroll have been implemented, they support speed which can be use to create a parallax effect
+
+## Collision detector
+The collision dectetor is very simple at this stage, it help to determine if 2 objects has entered in collision, this is useful to prevent object going too far, determine if the hero has encourter an ennemie or to implement gravity.
+
+## Controllers
+A Simple Keyboard controller that have 4 directions is implemented
+
+## Score
+a basic score controller has been implemented
