@@ -12,6 +12,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import me.sonique.common.controller.DirectionGameController
+import me.sonique.common.controller.KeyboardDirectionControllerHelper
+import me.sonique.common.core.ImageCGDKObject
+import me.sonique.common.graphic.GameCanvas
+import toVector2
 
 @Composable
 @ExperimentalComposeUiApi
@@ -24,7 +29,7 @@ fun App() {
 //        Text(text)
 //    }
 
-    val game = remember { MyGame() }
+    val game = remember { MyCGDKGame() }
 
     val horizontalCharacterScroll = remember { game.horizontalCharacterScroll }
     val verticalCharacterScroll = remember { game.verticalCharacterScroll }
@@ -32,7 +37,6 @@ fun App() {
     val horizontalMediumScroll = remember { game.horizontalMediumScroll }
     val horizontalBackScroll = remember { game.horizontalBackScroll }
 
-    val placementHelper = Placement(GAME_SIZE.toVector2())
 
     val density = LocalDensity.current
     LaunchedEffect(Unit) {
@@ -49,20 +53,18 @@ fun App() {
     }
 
 
-
-
-
     Column(modifier = Modifier.background(Color(51, 153, 255)).fillMaxHeight()) {
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text("Compose Game Development Kit (DEMO)")
             Text("Score: ${game.score().value}")
         }
 /*
-pointerMoveFilter(onMove = {
-//                with(density) {
-//                    game.targetLocation = DpOffset(it.x.toDp(), it.y.toDp())
-//                    print("mouse move: ${game.targetLocation.x} ${game.targetLocation.y} \n")
-//                }
+            // Mouse handling
+            pointerMoveFilter(onMove = {
+                with(density) {
+                    game.targetLocation = DpOffset(it.x.toDp(), it.y.toDp())
+                    print("mouse move: ${game.targetLocation.x} ${game.targetLocation.y} \n")
+                }
                 false
             })
  */
@@ -86,18 +88,11 @@ pointerMoveFilter(onMove = {
             keyboardHandler = KeyboardDirectionControllerHelper(directionGameController)
         ) {
 
-//                horizontalFrontScroll.positionX.value.dp
-//                horizontalCharacterScroll.positionX.value.dp
-//                verticalCharacterScroll.positionY.value.dp
-//                horizontalMediumScroll.positionX.value.dp
-//                horizontalBackScroll.positionX.value.dp
-
-            //Text("Hello: ${horizontalCharacterScroll.positionX.value}")
-
 
             game.gameObjects.forEach {
                 when (it) {
-                    is ImageGameObject -> GameImage(it)
+                    // Depending the type of GameObject, apply different processing
+                    is ImageCGDKObject -> GameImage(it)
                     else -> Unit
                 }
             }
