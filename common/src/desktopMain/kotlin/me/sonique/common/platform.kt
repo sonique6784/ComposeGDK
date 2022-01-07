@@ -17,6 +17,6 @@ actual fun getImageBitmap(resourcePath: String) : ImageBitmap? {
     }
 }
 
-actual fun getPrefix(): String {
-    return ""
+actual fun log(string: String) {
+    print(string)
 }

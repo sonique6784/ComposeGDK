@@ -1,6 +1,6 @@
 package me.sonique.common.controller
 
-interface IFourActionGameController {
+interface IFourActionGameController: GameController {
     fun left()
     fun right()
     fun up()

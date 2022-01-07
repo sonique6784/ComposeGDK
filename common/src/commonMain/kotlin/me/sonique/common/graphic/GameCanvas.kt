@@ -8,13 +8,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.input.key.*
-import org.openrndr.math.Vector2
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import me.sonique.common.controller.IKeyHandler
-import me.sonique.common.core.ImageCGDKObject
 
 
 @Composable
@@ -22,7 +16,6 @@ inline fun GameCanvas(
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color(255, 255, 255),
     keyboardHandler: IKeyHandler? = null, // Should we let the user add the handler themselve to the modifier?
-
     // Content must be last parameter
     content: @Composable BoxScope.() -> Unit,
 ) {
@@ -41,7 +34,7 @@ inline fun GameCanvas(
             .fillMaxHeight()
             .focusable()
     ) {
-        // Insert the content provided as last paramter
+        // Insert the content provided as last parameter
         content()
 
         // Allow us to request focus after composition
@@ -50,14 +43,4 @@ inline fun GameCanvas(
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
 

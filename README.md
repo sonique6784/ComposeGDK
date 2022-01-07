@@ -1,6 +1,9 @@
 # ComposeGDK
 The goal of Compose Game Developement Kit, is to provide a Multiplatform Game SDK based on Compose. It is a 2D Game Engine ideal to build oldschool games like Platform, Puzzle or Fight Games.
 
+## Disclaimer
+This is not a Google or JetBrains project, this not supported by any company. Given the experimental nature of this project, I can't guarantee much support at this stage. I hope we can build a community so that this become a strong library.
+
 ## Install
 Compose GDK requires Java 11 or above. It can be installed with homebrew (MacOS)
 ```

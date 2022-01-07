@@ -1,7 +1,5 @@
 package me.sonique.common.controller
 
-import me.sonique.common.controller.IDirectionGameController
-
 class DirectionGameController(
     private val leftCallback: () -> Unit,
     private val rightCallback: () -> Unit,
@@ -23,4 +21,10 @@ class DirectionGameController(
     override fun down() {
         downCallback.invoke()
     }
+
+    override fun hasDirectionalPad(): Boolean = true
+
+    override fun actionKeyCount(): Int = 0
+
+    override fun actionKeyNames(): List<String> = emptyList()
 }

@@ -36,11 +36,6 @@ class VerticalKeyboardScroll(
 
     }
 
-//
-//    fun jumpAnimation() {
-//        AnimationHelper.jump(objectList, 45, AnimationHelper.SPEED_NORMAL)
-//    }
-
     /**
      * implements moveDistance and based the distance
      * travelled with the keyboard

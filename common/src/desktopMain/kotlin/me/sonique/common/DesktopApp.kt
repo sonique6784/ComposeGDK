@@ -8,5 +8,5 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 @Composable
 @ExperimentalComposeUiApi
 fun AppPreview() {
-    App()
+    Game()
 }

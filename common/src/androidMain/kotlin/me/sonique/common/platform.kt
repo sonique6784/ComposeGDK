@@ -2,6 +2,7 @@ package me.sonique.common
 
 import android.content.Context
 import android.graphics.*
+import android.util.Log
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 
@@ -21,7 +22,6 @@ class ImageBitmapHelper {
 actual fun getPlatformName(): String {
     return "Android"
 }
-
 
 actual fun getImageBitmap(resourcePath: String): ImageBitmap? {
     return try {
@@ -54,4 +54,8 @@ actual fun getImageBitmap(resourcePath: String): ImageBitmap? {
 
         bitmap.asImageBitmap()
     }
+}
+
+actual fun log(string: String) {
+    Log.w("KMM", string)
 }

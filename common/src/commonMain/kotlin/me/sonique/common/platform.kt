@@ -6,4 +6,4 @@ expect fun getPlatformName(): String
 
 expect fun getImageBitmap(resourcePath: String) : ImageBitmap?
 
-expect fun getPrefix(): String
+expect fun log(string: String)

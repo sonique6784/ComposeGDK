@@ -12,46 +12,28 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
-import me.sonique.common.controller.DirectionGameController
 import me.sonique.common.controller.KeyboardDirectionControllerHelper
 import me.sonique.common.core.ImageCGDKObject
 import me.sonique.common.graphic.GameCanvas
-import toVector2
+import me.sonique.common.graphic.UITouchController
 
 @Composable
 @ExperimentalComposeUiApi
-fun App() {
-//    var text by remember { mutableStateOf("Hello, World!") }
-//
-//    Button(onClick = {
-//        text = "Hello, ${getPlatformName()}"
-//    }) {
-//        Text(text)
-//    }
+fun Game() {
 
     val game = remember { MyCGDKGame() }
-
-    val horizontalCharacterScroll = remember { game.horizontalCharacterScroll }
-    val verticalCharacterScroll = remember { game.verticalCharacterScroll }
-    val horizontalFrontScroll = remember { game.horizontalFrontScroll }
-    val horizontalMediumScroll = remember { game.horizontalMediumScroll }
-    val horizontalBackScroll = remember { game.horizontalBackScroll }
 
 
     val density = LocalDensity.current
     LaunchedEffect(Unit) {
         while (true) {
             withFrameMillis {
-                horizontalCharacterScroll.update()
-                verticalCharacterScroll.update()
-                horizontalFrontScroll.update()
-                horizontalMediumScroll.update()
-                horizontalBackScroll.update()
-                game.update()
+                if (it % 4L == 0L) {
+                    game.update()
+                }
             }
         }
     }
-
 
     Column(modifier = Modifier.background(Color(51, 153, 255)).fillMaxHeight()) {
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
@@ -69,33 +51,23 @@ fun App() {
             })
  */
 
-        val directionGameController = DirectionGameController(
-            leftCallback = {
-                horizontalCharacterScroll.direction = HorizontalScroll.Direction.LEFT
-                horizontalCharacterScroll.distanceToMove()
-            }, rightCallback = {
-                horizontalCharacterScroll.direction = HorizontalScroll.Direction.RIGHT
-                horizontalCharacterScroll.distanceToMove()
-            }, upCallback = {
-                verticalCharacterScroll.direction = VerticalScroll.Direction.UP
-                verticalCharacterScroll.distanceToMove()
-            }, downCallback = {
-                verticalCharacterScroll.direction = VerticalScroll.Direction.DOWN
-                verticalCharacterScroll.distanceToMove()
-            })
+
         GameCanvas(
-            modifier = Modifier, backgroundColor = Color(161, 174, 253),
-            keyboardHandler = KeyboardDirectionControllerHelper(directionGameController)
+            modifier = Modifier,
+            backgroundColor = Color(161, 174, 253),
+            keyboardHandler = KeyboardDirectionControllerHelper(game.getDirectionalController())
         ) {
 
 
             game.gameObjects.forEach {
                 when (it) {
-                    // Depending the type of GameObject, apply different processing
+                    // Depending on the type of GameObject, apply different processing
                     is ImageCGDKObject -> GameImage(it)
                     else -> Unit
                 }
             }
+
+            UITouchController()
         }
     }
 }
