@@ -27,13 +27,13 @@ fun GameImage(
                 gameObject2.mutablePosition.value.y.dp
             )
             //.clipToBounds()
-            .run {
-                if (gameObject2.isTexture) {
-                    this.background(Color.Yellow)
-                } else {
-                    this
-                }
-            }
+//            .run {
+//                if (gameObject2.isTexture) {
+//                    this.background(Color.Yellow)
+//                } else {
+//                    this
+//                }
+//            }
     } else {
         modifier.clipToBounds()
     }

@@ -13,11 +13,84 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import me.sonique.common.controller.IDirectionGameController
 import me.sonique.common.log
 
+@Composable
+fun UIVirtualArrowController(directionGameController: IDirectionGameController) {
+    Box(modifier = Modifier
+        .width(200.dp)
+        .height(200.dp)
+        .background(Color.Green)
+        .pointerInput(Unit) {
+//        detectTapGestures(
+//            onPress = {/* Called when the gesture starts */ offset ->
+//                log("onPress: ${offset.print()} \n")
+//                      },
+//            onDoubleTap = { /* Called on Double Tap */
+//                          },
+//            onLongPress = { /* Called on Long Press */
+//                          },
+//            onTap = { /* Called on Tap */
+//                    offset ->
+//                log("onTap: ${offset.print()} \n")
+//            }
+//        )
+        detectTapGestures(
+            onTap = { offset ->
+            val w = 200.dp.toPx()
+            log("w: $w")
+
+            log("Position change: ${offset.print()}, drag: ${offset.print()} \n")
+            /*
+              |UP|
+            LF|__|RG
+              |DW|
+
+               w/2
+                |
+            ____c____ w
+                |
+                |
+            c = w/2, x/2
+            */
+
+            val x = offset.x
+            val y = offset.y
+
+            when {
+                // Up
+                y < w/2 && x > w/3 && x < (w/3) * 2 -> {
+                    log("UP")
+                    directionGameController.up()
+                }
+                // DOWN
+                y > w/2 && x > w/3 && x < (w/3) * 2-> {
+                    log("DOWN")
+                    directionGameController.down()
+                }
+                // LEFT
+                x < w/2 && y > w/3 && y < (w/3) * 2 -> {
+                    log("LEFT")
+                    directionGameController.left()
+                }
+                // RIgHT
+                x > w/2 && y > w/3 && y < (w/3) * 2 -> {
+                    log("RIGHT")
+                    directionGameController.right()
+                }
+                else -> Unit
+            }
+
+            //...
+        })
+    }) {
+
+    }
+}
 
 @Composable
-fun UITouchController() {
+fun UIJoystickController() {
     Box(modifier = Modifier.width(200.dp).height(200.dp).background(Color.Red).pointerInput(Unit) {
 //        detectTapGestures(
 //            onPress = {/* Called when the gesture starts */ offset ->

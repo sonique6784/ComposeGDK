@@ -1,13 +1,15 @@
 import org.jetbrains.compose.compose
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose") version "1.0.0-rc3"
     id("com.android.library")
+    id("maven-publish")
 }
 
 group = "me.sonique"
-version = "1.0"
+version = "0.0.1-dev"
 
 object Versions {
     const val compose = "1.0.0"
@@ -38,20 +40,26 @@ kotlin {
             kotlinOptions.jvmTarget = "11"
         }
     }
+    //linuxX64()
+
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation("org.openrndr:openrndr-math:0.3.47")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.ui)
                 api(compose.desktop.currentOs)
-                implementation("org.openrndr:openrndr-math:0.3.47")
+
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
             }
         }
         val androidMain by getting {
@@ -60,10 +68,8 @@ kotlin {
                 api("androidx.core:core-ktx:1.6.0")
                 api(Compose.ui)
                 api(Compose.runtime)
-                //api(Compose.foundation)
                 api(Compose.material)
                 api(Compose.ui)
-                //api(compose.desktop.currentOs)
             }
         }
         val androidTest by getting {
@@ -74,9 +80,16 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
+                api("org.openrndr:openrndr-math:0.3.47")
             }
         }
         val desktopTest by getting
+    }
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "11"
     }
 }
 

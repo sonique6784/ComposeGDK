@@ -7,9 +7,4 @@ open class ImageCGDKObject(
     val isTexture: Boolean = false,
     size: Vector2 = Vector2(0.0, 0.0),
     position: Vector2 = Vector2(0.0, 0.0)
-) : CGDKObject(size, position) {
-
-    fun render() {
-
-    }
-}
+) : CGDKObject(size, position)

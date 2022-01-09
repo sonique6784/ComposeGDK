@@ -25,7 +25,7 @@ import kotlin.random.Random
 
 
 val GAME_SIZE = IntSize(480, 320)
-val WINDOW_SIZE = IntSize(GAME_SIZE.width, GAME_SIZE.height + 48)
+val WINDOW_SIZE = IntSize(GAME_SIZE.width, GAME_SIZE.height + 64)
 
 
 

@@ -1,6 +1,6 @@
 package me.sonique.common
 
-import java.time.Instant
+import kotlinx.datetime.Clock
 import kotlin.math.absoluteValue
 
 
@@ -16,7 +16,9 @@ class HorizontalAutoScroll(
     direction: Direction = Direction.LEFT,
 ) : HorizontalScroll(speed, direction) {
 
-    private var previousTime: Long = Instant.now().toEpochMilli()
+
+
+    private var previousTime: Long = Clock.System.now().toEpochMilliseconds()
 
     override fun postMoveDistance() {
         // Nothing here
@@ -29,7 +31,7 @@ class HorizontalAutoScroll(
      * @return Int (distance in dp)
      */
     override fun moveDistance(): Int {
-        val now = Instant.now().toEpochMilli()
+        val now = Clock.System.now().toEpochMilliseconds()
         val timeDiff = previousTime - now
 
         // Move by Speed DP / Second

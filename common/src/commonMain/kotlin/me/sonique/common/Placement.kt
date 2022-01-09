@@ -33,7 +33,7 @@ class Placement(var gameCanvasSize: Vector2) {
         return Vector2(x, y)
     }
 
-    fun toTopLeft(gameObject: CGDKObject): Vector2 {
+    fun toTopLeft(): Vector2 {
         val x = 0.0
         val y = 0.0
 

@@ -10,12 +10,15 @@ import androidx.compose.ui.Modifier
 //import androidx.compose.ui.input.pointer.pointerMoveFilter
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.unit.dp
 import me.sonique.common.controller.KeyboardDirectionControllerHelper
 import me.sonique.common.core.ImageCGDKObject
 import me.sonique.common.graphic.GameCanvas
-import me.sonique.common.graphic.UITouchController
+import me.sonique.common.graphic.UIJoystickController
+import me.sonique.common.graphic.UIVirtualArrowController
 
 @Composable
 @ExperimentalComposeUiApi
@@ -23,12 +26,31 @@ fun Game() {
 
     val game = remember { MyCGDKGame() }
 
-
+    val SHOW_FPS = false
+    var lastFrame = 0L
+    var frameCount = 0
+    var lastSecond = 0L
     val density = LocalDensity.current
     LaunchedEffect(Unit) {
         while (true) {
             withFrameMillis {
-                if (it % 4L == 0L) {
+                if(it - lastFrame >= 15 ) { // aiming for 60Hz
+                    if(SHOW_FPS) {
+                        if (lastSecond == 0L) {
+                            lastSecond = it
+                        }
+                        frameCount++
+
+                        if (it - lastSecond >= 1000) {
+                            lastSecond = it
+                            print("frame per second : $frameCount\n")
+                            frameCount = 0
+                        }
+
+                    }
+
+                    lastFrame = it
+
                     game.update()
                 }
             }
@@ -37,8 +59,8 @@ fun Game() {
 
     Column(modifier = Modifier.background(Color(51, 153, 255)).fillMaxHeight()) {
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Text("Compose Game Development Kit (DEMO)")
-            Text("Score: ${game.score().value}")
+            Text("Compose Game Development Kit (DEMO)", modifier = Modifier.padding(8.dp))
+            Text("Score: ${game.score().value}", color = Color.Yellow, modifier = Modifier.background(Color.Black).padding(8.dp))
         }
 /*
             // Mouse handling
@@ -67,7 +89,7 @@ fun Game() {
                 }
             }
 
-            UITouchController()
+            //UIVirtualArrowController(game.getDirectionalController())
         }
     }
 }

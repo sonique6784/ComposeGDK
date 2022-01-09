@@ -20,6 +20,7 @@ inline fun GameCanvas(
     content: @Composable BoxScope.() -> Unit,
 ) {
     // Allow the canvas to receive KeyEvents
+
     val focusRequester = remember { FocusRequester() }
 
     Box(
@@ -38,8 +39,10 @@ inline fun GameCanvas(
         content()
 
         // Allow us to request focus after composition
-        SideEffect {
-            focusRequester.requestFocus()
+        if(keyboardHandler != null) {
+            SideEffect {
+                focusRequester.requestFocus()
+            }
         }
     }
 }
