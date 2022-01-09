@@ -18,30 +18,16 @@ fun GameImage(
     gameObject2: ImageCGDKObject,
     modifier: Modifier = Modifier
 ) {
-    val mod = if (gameObject2 != null) {
-        modifier
+      val mod = modifier
             .height(gameObject2.mutableSize.value.y.dp)
             .width(gameObject2.mutableSize.value.x.dp)
             .offset(
                 gameObject2.mutablePosition.value.x.dp,
                 gameObject2.mutablePosition.value.y.dp
             )
-            //.clipToBounds()
-//            .run {
-//                if (gameObject2.isTexture) {
-//                    this.background(Color.Yellow)
-//                } else {
-//                    this
-//                }
-//            }
-    } else {
-        modifier.clipToBounds()
-    }
-//960003330350
 
 
-    val bitmap = getImageBitmap(gameObject2.imageFileName)
-    if (bitmap == null) return
+    val bitmap = getImageBitmap(gameObject2.imageFileName) ?: return
     Box(mod) {
         if (gameObject2.isTexture) {
             Texture(gameObject2.imageFileName, CGDKObject = gameObject2)

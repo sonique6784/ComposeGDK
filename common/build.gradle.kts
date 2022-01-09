@@ -85,11 +85,8 @@ kotlin {
         }
         val desktopTest by getting
     }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "11"
+    dependencies {
+        commonMainImplementation("org.openrndr:openrndr-math:0.3.47")
     }
 }
 

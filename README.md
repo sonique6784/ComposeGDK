@@ -67,3 +67,7 @@ The collision detector is very simple at this stage, it help to determine if 2 o
 
 ## Score
 A basic score controller has been implemented
+
+# Known Issues
+Any help on the following will be appreciated:
+ * unable to build the library with `./gradlew build`, it's showing `Execution failed for task ':common:compileKotlinMetadata'` because the `openrndr-math` doesn't seem to resolve (but works when running, on both Android and MacOS)
