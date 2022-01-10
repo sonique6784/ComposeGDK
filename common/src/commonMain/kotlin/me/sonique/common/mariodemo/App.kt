@@ -17,23 +17,28 @@ import androidx.compose.ui.unit.dp
 import me.sonique.common.controller.KeyboardDirectionControllerHelper
 import me.sonique.common.core.ImageCGDKObject
 import me.sonique.common.graphic.GameCanvas
-import me.sonique.common.graphic.UIJoystickController
 import me.sonique.common.graphic.UIVirtualArrowController
 
 @Composable
 @ExperimentalComposeUiApi
 fun Game() {
 
-    val game = remember { MyCGDKGame() }
+    val game = remember { MarioDemo() }
 
-    val SHOW_FPS = false
+    var fpsMutable = mutableStateOf(0)
+    var fps = remember { fpsMutable }
+
+    val SHOW_FPS = true
     var lastFrame = 0L
     var frameCount = 0
     var lastSecond = 0L
     val density = LocalDensity.current
     LaunchedEffect(Unit) {
         while (true) {
+            // We want to refresh the screen on a regular basis, so here we use a callback every millisecond
             withFrameMillis {
+                // to prevent too many frame drawn and optimise a bit the performance,
+                // we aim for ~60fps
                 if(it - lastFrame >= 15 ) { // aiming for 60Hz
                     if(SHOW_FPS) {
                         if (lastSecond == 0L) {
@@ -44,9 +49,9 @@ fun Game() {
                         if (it - lastSecond >= 1000) {
                             lastSecond = it
                             print("frame per second : $frameCount\n")
+                            fpsMutable.value = frameCount
                             frameCount = 0
                         }
-
                     }
 
                     lastFrame = it
@@ -61,6 +66,7 @@ fun Game() {
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text("Compose Game Development Kit (DEMO)", modifier = Modifier.padding(8.dp))
             Text("Score: ${game.score().value}", color = Color.Yellow, modifier = Modifier.background(Color.Black).padding(8.dp))
+            Text("FPS: ${fps.value}")
         }
 /*
             // Mouse handling
@@ -90,6 +96,7 @@ fun Game() {
             }
 
             //UIVirtualArrowController(game.getDirectionalController())
+            //UIJoystickController(game.getDirectionalController())
         }
     }
 }

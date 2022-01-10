@@ -28,10 +28,6 @@ class AnimationHelper {
 
             objectList.forEach { gameObject ->
                 mainScope.launch {
-                    print("Start Jump \n")
-                    // time: 8 * 16 = 128ms
-                    // distance:  80dp
-                    // 8 * 80 = 640dp/second
                     for (i in 0..stepsCount) {
                         gameObject.mutablePosition.value = Vector2(
                             gameObject.mutablePosition.value.x,

@@ -23,88 +23,63 @@ fun UIVirtualArrowController(directionGameController: IDirectionGameController) 
         .height(200.dp)
         .background(Color.Green)
         .pointerInput(Unit) {
-//        detectTapGestures(
-//            onPress = {/* Called when the gesture starts */ offset ->
-//                log("onPress: ${offset.print()} \n")
-//                      },
-//            onDoubleTap = { /* Called on Double Tap */
-//                          },
-//            onLongPress = { /* Called on Long Press */
-//                          },
-//            onTap = { /* Called on Tap */
-//                    offset ->
-//                log("onTap: ${offset.print()} \n")
-//            }
-//        )
-        detectTapGestures(
-            onTap = { offset ->
-            val w = 200.dp.toPx()
-            log("w: $w")
+            detectTapGestures(
+                onTap = { offset ->
+                    val w = 200.dp.toPx()
+                    log("w: $w")
 
-            log("Position change: ${offset.print()}, drag: ${offset.print()} \n")
-            /*
-              |UP|
-            LF|__|RG
-              |DW|
+                    log("Position change: ${offset.print()}, drag: ${offset.print()} \n")
+                    /*
+                      |UP|
+                    LF|__|RG
+                      |DW|
 
-               w/2
-                |
-            ____c____ w
-                |
-                |
-            c = w/2, x/2
-            */
+                       w/2
+                        |
+                    ____c____ w
+                        |
+                        |
+                    c = w/2, x/2
+                    */
 
-            val x = offset.x
-            val y = offset.y
+                    val x = offset.x
+                    val y = offset.y
 
-            when {
-                // Up
-                y < w/2 && x > w/3 && x < (w/3) * 2 -> {
-                    log("UP")
-                    directionGameController.up()
-                }
-                // DOWN
-                y > w/2 && x > w/3 && x < (w/3) * 2-> {
-                    log("DOWN")
-                    directionGameController.down()
-                }
-                // LEFT
-                x < w/2 && y > w/3 && y < (w/3) * 2 -> {
-                    log("LEFT")
-                    directionGameController.left()
-                }
-                // RIgHT
-                x > w/2 && y > w/3 && y < (w/3) * 2 -> {
-                    log("RIGHT")
-                    directionGameController.right()
-                }
-                else -> Unit
-            }
+                    when {
+                        // Up
+                        y < w / 2 && x > w / 3 && x < (w / 3) * 2 -> {
+                            log("UP")
+                            directionGameController.up()
+                        }
+                        // DOWN
+                        y > w / 2 && x > w / 3 && x < (w / 3) * 2 -> {
+                            log("DOWN")
+                            directionGameController.down()
+                        }
+                        // LEFT
+                        x < w / 2 && y > w / 3 && y < (w / 3) * 2 -> {
+                            log("LEFT")
+                            directionGameController.left()
+                        }
+                        // RIgHT
+                        x > w / 2 && y > w / 3 && y < (w / 3) * 2 -> {
+                            log("RIGHT")
+                            directionGameController.right()
+                        }
+                        else -> Unit
+                    }
 
-            //...
-        })
-    }) {
+                    //...
+                })
+        }) {
 
     }
 }
 
 @Composable
-fun UIJoystickController() {
+fun UIJoystickController(directionGameController: IDirectionGameController) {
     Box(modifier = Modifier.width(200.dp).height(200.dp).background(Color.Red).pointerInput(Unit) {
-//        detectTapGestures(
-//            onPress = {/* Called when the gesture starts */ offset ->
-//                log("onPress: ${offset.print()} \n")
-//                      },
-//            onDoubleTap = { /* Called on Double Tap */
-//                          },
-//            onLongPress = { /* Called on Long Press */
-//                          },
-//            onTap = { /* Called on Tap */
-//                    offset ->
-//                log("onTap: ${offset.print()} \n")
-//            }
-//        )
+
         detectDragGestures { change, dragAmount ->
             val w = 200.dp.toPx()
             log("w: $w")
@@ -130,19 +105,23 @@ fun UIJoystickController() {
 
             when {
                 // Up
-                y < w/2 && x > w/3 && x < (w/3) * 2 -> {
+                y < w / 2 && x > w / 3 && x < (w / 3) * 2 -> {
+                    directionGameController.up()
                     log("UP")
                 }
                 // DOWN
-                y > w/2 && x > w/3 && x < (w/3) * 2-> {
+                y > w / 2 && x > w / 3 && x < (w / 3) * 2 -> {
+                    directionGameController.down()
                     log("DOWN")
                 }
                 // LEFT
-                x < w/2 && y > w/3 && y < (w/3) * 2 -> {
+                x < w / 2 && y > w / 3 && y < (w / 3) * 2 -> {
+                    directionGameController.left()
                     log("LEFT")
                 }
                 // RIgHT
-                x > w/2 && y > w/3 && y < (w/3) * 2 -> {
+                x > w / 2 && y > w / 3 && y < (w / 3) * 2 -> {
+                    directionGameController.right()
                     log("RIGHT")
                 }
                 else -> Unit

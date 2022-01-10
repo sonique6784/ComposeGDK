@@ -67,7 +67,7 @@ class Wall:  ImageCGDKObject(
     size = Vector2(25.dp.value.toDouble(), 25.dp.value.toDouble())
 )
 
-class MyCGDKGame : CGDKGame(), ProvideDirectionalController {
+class MarioDemo : CGDKGame(), ProvideDirectionalController {
 
     val placementHelper = Placement(GAME_SIZE.toVector2())
 
