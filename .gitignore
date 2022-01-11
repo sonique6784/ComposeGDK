@@ -17,3 +17,4 @@
 .externalNativeBuild
 .cxx
 /.idea/runConfigurations.xml
+*.code-workspace

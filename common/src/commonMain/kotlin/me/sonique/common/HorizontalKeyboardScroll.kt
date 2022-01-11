@@ -30,13 +30,6 @@ class HorizontalKeyboardScroll(
      * @return Int (distance in dp)
      */
     override fun moveDistance(): Int {
-        return when (direction) {
-            Direction.RIGHT -> {
-                -distance
-            }
-            Direction.LEFT -> {
-                distance
-            }
-        }
+        return -distance
     }
 }

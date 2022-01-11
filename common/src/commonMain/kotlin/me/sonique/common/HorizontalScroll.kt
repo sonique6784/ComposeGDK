@@ -6,6 +6,8 @@ import org.openrndr.math.Vector2
 
 /**
  * HorizontalScroll
+ * Help to scroll/move multiple objects at the same speed 
+ * Ideal to move objects, maps, decors and background Horizontally
  *
  * @param initialPositionX : where the object should be placed
  * @param speed : at what speed the object travels (in DP / second)
@@ -13,7 +15,6 @@ import org.openrndr.math.Vector2
  *
  */
 abstract class HorizontalScroll(
-    //private val initialPositionX: Int = 0,
     var speed: Int = 10,
     var direction: Direction = Direction.LEFT,
 ) {
@@ -52,8 +53,6 @@ abstract class HorizontalScroll(
         }
     }
 
-    //var positionX = mutableStateOf(initialPositionX)
-
     /**
      * moveDistance
      * implement this method to tell this component
@@ -77,19 +76,21 @@ abstract class HorizontalScroll(
      * move the objects according the parameters (speed and direction)
      */
     fun update() {
-        val moveSize = moveDistance()
+        val moveSize = moveDistance().run {
+                when (direction) {
+                Direction.LEFT -> this * -1
+                else -> this
+            }
+        }
+
         this.postMoveDistance()
 
-
         // move to the left
-        //positionX.value -= moveSize
-
         objectList.forEach {
             it.mutablePosition.value = Vector2(
                 it.mutablePosition.value.x - moveSize.toInt(),
                 it.mutablePosition.value.y
             )
-            //it.actualSizeX.value += 50
         }
 
         removeNotVisibleObjects()

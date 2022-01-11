@@ -70,15 +70,16 @@ class Wall:  ImageCGDKObject(
 class MarioDemo : CGDKGame(), ProvideDirectionalController {
 
     val placementHelper = Placement(GAME_SIZE.toVector2())
-
+    val upActionListener = UpActionListener()
 
     val horizontalCharacterScroll = HorizontalKeyboardScroll(speed = 7)
-    val verticalCharacterScroll = VerticalKeyboardScroll(speed = 7)
 
     val F_Scroll = 60
     val horizontalFrontScroll = HorizontalAutoScroll(speed = F_Scroll)
     val horizontalMediumScroll = HorizontalAutoScroll(speed = 2)
-    val horizontalBackScroll = HorizontalAutoScroll(speed = 1)
+
+    val verticalCloudMediumScroll = VerticalAutoScroll(speed = 2)
+    val horizontalBackScroll = HorizontalAutoScroll(speed = 5)
 
     val score = mutableStateOf(0)
 
@@ -92,11 +93,9 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
                 this.horizontalCharacterScroll.direction = HorizontalScroll.Direction.RIGHT
                 this.horizontalCharacterScroll.distanceToMove()
             }, upCallback = {
-                this.verticalCharacterScroll.direction = VerticalScroll.Direction.UP
-                this.verticalCharacterScroll.distanceToMove()
+                upActionListener.onAction()
             }, downCallback = {
-                this.verticalCharacterScroll.direction = VerticalScroll.Direction.DOWN
-                this.verticalCharacterScroll.distanceToMove()
+                
             })
 
         this.gameControllers.add(directionGameController)
@@ -110,14 +109,20 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
         horizontalFrontScroll.addObject(floor)
         this.addGObject(floor)
 
-        for(i in 0 .. 15) {
+        for(i in 0 .. 20) {
             val cloud3 = Cloud()
             cloud3.mutablePosition.value = placementHelper.toBottomCenter(cloud3)
-                .rightShift( Random.nextInt(i * 300, (i * 300)+200))
+                .rightShift( Random.nextInt(i * 150, (i * 150)+200))
                 .higher( Random.nextInt(100, 250))
-            horizontalBackScroll.addObject(cloud3)
+            if(i % 4 == 0) {
+                verticalCloudMediumScroll.addObject(cloud3)
+            } else {
+                verticalCloudMediumScroll.addObject(cloud3)
+                horizontalBackScroll.addObject(cloud3)
+            }
             this.addGObject(cloud3)
         }
+
 
         for(i in 0 .. 15) {
             val wallCount = Random.nextInt(1,3)
@@ -151,7 +156,7 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
         mario.mutablePosition.value = placementHelper.toBottomCenter(mario)
         mario.mutablePosition.value = placementHelper.putObjectAOnTopB(mario, floor)
         horizontalCharacterScroll.addObject(mario)
-        verticalCharacterScroll.addObject(mario)
+        upActionListener.addObject(mario)
         this.addGObject(mario)
 
 
@@ -159,10 +164,10 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
 
     fun update() {
         horizontalCharacterScroll.update()
-        verticalCharacterScroll.update()
         horizontalFrontScroll.update()
         horizontalMediumScroll.update()
         horizontalBackScroll.update()
+        verticalCloudMediumScroll.update()
         CollisionHelper.detectCollisions(this.gameObjects)
     }
 

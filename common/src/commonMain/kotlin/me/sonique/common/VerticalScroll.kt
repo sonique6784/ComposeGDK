@@ -6,14 +6,14 @@ import org.openrndr.math.Vector2
 
 /**
  * VerticalScroll
+ * Help to scroll/move multiple objects at the same speed
+ * Ideal to move objects, maps, decors and background Vertically
  *
- * @param initialPositionX : where the object should be placed
  * @param speed : at what speed the object travels (in DP / second)
- * @param direction : which direction the object travel to: left or right
+ * @param direction : which direction the object travel to: up or down
  *
  */
 abstract class VerticalScroll(
-    //private val initialPositionY: Int = 0,
     var speed: Int = 10,
     var direction: Direction = Direction.UP,
 ) {
@@ -77,13 +77,18 @@ abstract class VerticalScroll(
      * move the objects according the parameters (speed and direction)
      */
     fun update() {
-        val moveSize = moveDistance()
+        val moveSize = moveDistance().run {
+            // Apply travel direction
+            when (direction) {
+                Direction.UP -> this * -1
+                else -> this
+            }
+        }
+
         this.postMoveDistance()
 
-        // move to the left
-        //positionY.value -= moveSize
+        // move up
         objectList.forEach {
-            //print("moving UP : ${it.position.x} , ${it.position.y - moveSize.toInt()} (${moveSize.toInt()}) \n")
             it.mutablePosition.value =
                 Vector2(it.mutablePosition.value.x, it.mutablePosition.value.y - moveSize.toInt())
         }
@@ -92,8 +97,6 @@ abstract class VerticalScroll(
     }
 
     enum class Direction {
-        LEFT,
-        RIGHT,
         UP,
         DOWN
     }
