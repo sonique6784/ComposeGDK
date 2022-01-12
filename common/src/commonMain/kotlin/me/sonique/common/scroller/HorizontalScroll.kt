@@ -1,24 +1,25 @@
-package me.sonique.common
+package me.sonique.common.scroller
 
 import me.sonique.common.core.CGDKObject
 import org.openrndr.math.Vector2
 
 
 /**
- * VerticalScroll
- * Help to scroll/move multiple objects at the same speed
- * Ideal to move objects, maps, decors and background Vertically
+ * HorizontalScroll
+ * Help to scroll/move multiple objects at the same speed 
+ * Ideal to move objects, maps, decors and background Horizontally
  *
+ * @param initialPositionX : where the object should be placed
  * @param speed : at what speed the object travels (in DP / second)
- * @param direction : which direction the object travel to: up or down
+ * @param direction : which direction the object travel to: left or right
  *
  */
-abstract class VerticalScroll(
+abstract class HorizontalScroll(
     var speed: Int = 10,
-    var direction: Direction = Direction.UP,
+    var direction: Direction = Direction.LEFT,
 ) {
 
-    protected val objectList: MutableList<CGDKObject> = arrayListOf()
+    private var objectList: MutableList<CGDKObject> = arrayListOf()
 
     /**
      * addObject
@@ -52,8 +53,6 @@ abstract class VerticalScroll(
         }
     }
 
-    //var positionY = mutableStateOf(initialPositionY)
-
     /**
      * moveDistance
      * implement this method to tell this component
@@ -78,26 +77,27 @@ abstract class VerticalScroll(
      */
     fun update() {
         val moveSize = moveDistance().run {
-            // Apply travel direction
-            when (direction) {
-                Direction.UP -> this * -1
+                when (direction) {
+                Direction.LEFT -> this * -1
                 else -> this
             }
         }
 
         this.postMoveDistance()
 
-        // move up
+        // move to the left
         objectList.forEach {
-            it.mutablePosition.value =
-                Vector2(it.mutablePosition.value.x, it.mutablePosition.value.y - moveSize.toInt())
+            it.mutablePosition.value = Vector2(
+                it.mutablePosition.value.x - moveSize.toInt(),
+                it.mutablePosition.value.y
+            )
         }
 
-        //removeNotVisibleObjects()
+        removeNotVisibleObjects()
     }
 
     enum class Direction {
-        UP,
-        DOWN
+        LEFT,
+        RIGHT
     }
 }

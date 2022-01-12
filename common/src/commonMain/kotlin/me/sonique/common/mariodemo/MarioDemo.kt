@@ -13,11 +13,17 @@ import me.sonique.common.collision.OnCollision
 import me.sonique.common.controller.DirectionGameController
 import me.sonique.common.controller.IDirectionGameController
 import me.sonique.common.controller.ProvideDirectionalController
-import me.sonique.common.controller.event.IOnKeyUp
+import me.sonique.common.controller.action.LeftActionListener
+import me.sonique.common.controller.action.RightActionListener
+import me.sonique.common.controller.action.UpActionListener
 import me.sonique.common.core.CGDKGame
 import me.sonique.common.core.CGDKObject
 import me.sonique.common.core.ImageCGDKObject
 import me.sonique.common.score.ScoreManager
+import me.sonique.common.scroller.HorizontalAutoScroll
+import me.sonique.common.scroller.HorizontalKeyboardScroll
+import me.sonique.common.scroller.HorizontalScroll
+import me.sonique.common.scroller.VerticalAutoScroll
 import org.openrndr.math.Vector2
 import rightShift
 import toVector2
@@ -46,9 +52,25 @@ class QuestionMarkBox() : ImageCGDKObject(
 class Mario: ImageCGDKObject(
     imageFileName = "mario.jpg",
     size = Vector2(50.dp.value.toDouble(), 30.dp.value.toDouble())
-), IOnKeyUp {
+), UpActionListener.IOnKeyUp, LeftActionListener.IOnKeyLeft, RightActionListener.IOnKeyRight {
     override fun onKeyUp() {
         AnimationHelper.jump(listOf(this), 45, AnimationHelper.SPEED_NORMAL)
+    }
+
+    override fun onKeyLeft() {
+        print("left Key Mario \n")
+        this.mutablePosition.value = Vector2(
+            this.mutablePosition.value.x - 7,
+            this.mutablePosition.value.y
+        )
+    }
+
+    override fun onKeyRight() {
+        print("right Key Mario \n")
+        this.mutablePosition.value = Vector2(
+            this.mutablePosition.value.x + 7,
+            this.mutablePosition.value.y
+        )
     }
 }
 
@@ -69,17 +91,17 @@ class Wall:  ImageCGDKObject(
 
 class MarioDemo : CGDKGame(), ProvideDirectionalController {
 
-    val placementHelper = Placement(GAME_SIZE.toVector2())
-    val upActionListener = UpActionListener()
+    private val placementHelper = Placement(GAME_SIZE.toVector2())
+    private val upActionListener = UpActionListener()
+    private val rightActionListener = RightActionListener()
+    private val leftActionListener = LeftActionListener()
 
-    val horizontalCharacterScroll = HorizontalKeyboardScroll(speed = 7)
+    private val F_Scroll = 60
+    private val horizontalFrontScroll = HorizontalAutoScroll(speed = F_Scroll)
+    private val horizontalMediumScroll = HorizontalAutoScroll(speed = 2)
 
-    val F_Scroll = 60
-    val horizontalFrontScroll = HorizontalAutoScroll(speed = F_Scroll)
-    val horizontalMediumScroll = HorizontalAutoScroll(speed = 2)
-
-    val verticalCloudMediumScroll = VerticalAutoScroll(speed = 2)
-    val horizontalBackScroll = HorizontalAutoScroll(speed = 5)
+    private val verticalCloudMediumScroll = VerticalAutoScroll(speed = 2)
+    private val horizontalBackScroll = HorizontalAutoScroll(speed = 5)
 
     val score = mutableStateOf(0)
 
@@ -87,11 +109,9 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
 
         val directionGameController = DirectionGameController(
             leftCallback = {
-                this.horizontalCharacterScroll.direction = HorizontalScroll.Direction.LEFT
-                this.horizontalCharacterScroll.distanceToMove()
+                leftActionListener.onAction()
             }, rightCallback = {
-                this.horizontalCharacterScroll.direction = HorizontalScroll.Direction.RIGHT
-                this.horizontalCharacterScroll.distanceToMove()
+                rightActionListener.onAction()
             }, upCallback = {
                 upActionListener.onAction()
             }, downCallback = {
@@ -155,15 +175,15 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
         val mario = Mario()
         mario.mutablePosition.value = placementHelper.toBottomCenter(mario)
         mario.mutablePosition.value = placementHelper.putObjectAOnTopB(mario, floor)
-        horizontalCharacterScroll.addObject(mario)
         upActionListener.addObject(mario)
+        rightActionListener.addObject(mario)
+        leftActionListener.addObject(mario)
         this.addGObject(mario)
 
 
     }
 
     fun update() {
-        horizontalCharacterScroll.update()
         horizontalFrontScroll.update()
         horizontalMediumScroll.update()
         horizontalBackScroll.update()

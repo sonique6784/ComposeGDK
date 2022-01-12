@@ -1,8 +1,11 @@
-package me.sonique.common
+package me.sonique.common.controller.action
 
 import me.sonique.common.core.CGDKObject
 
-
+/**
+ * ActionListener
+ * execute onAction for all object in objectList
+ */
 abstract class ActionListener() {
     protected val objectList: MutableList<CGDKObject> = mutableListOf()
 

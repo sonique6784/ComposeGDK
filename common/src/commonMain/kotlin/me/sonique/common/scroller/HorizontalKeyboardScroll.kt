@@ -1,4 +1,6 @@
-package me.sonique.common
+package me.sonique.common.scroller
+
+import me.sonique.common.scroller.HorizontalScroll
 
 
 /**
