@@ -45,14 +45,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.openrndr:openrndr-math:0.3.47")
+                implementation("org.openrndr:openrndr-math:0.3.58")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.ui)
                 api(compose.desktop.currentOs)
-
             }
         }
         val commonTest by getting {
@@ -65,7 +64,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api("androidx.appcompat:appcompat:1.4.0")
-                api("androidx.core:core-ktx:1.6.0")
+                api("androidx.core:core-ktx:1.7.0")
                 api(Compose.ui)
                 api(Compose.runtime)
                 api(Compose.material)
@@ -80,14 +79,13 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
-                api("org.openrndr:openrndr-math:0.3.47")
             }
         }
         val desktopTest by getting
     }
-    dependencies {
-        commonMainImplementation("org.openrndr:openrndr-math:0.3.47")
-    }
+//    dependencies {
+//        commonMainImplementation("org.openrndr:openrndr-math:0.3.58")
+//    }
 }
 
 android {
@@ -95,7 +93,7 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdkVersion(24)
-        targetSdkVersion(30)
+        targetSdkVersion(31)
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

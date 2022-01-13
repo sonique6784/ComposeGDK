@@ -1,6 +1,8 @@
 # ComposeGDK
 The goal of Compose Game Development Kit, is to provide a Multiplatform Game SDK based on Compose. It is a 2D Game Engine ideal to build old-school games like Platform, Puzzle or Fight Games.
 
+Please checkout the [wiki](https://github.com/sonique6784/ComposeGDK/wiki)  for latest news and development directions
+
 ## Disclaimer
 This is **not** a game, this is a development kit to build games.
 
@@ -90,12 +92,22 @@ Any help on the following will be appreciated:
  * unable to build the library with `./gradlew build`, it's showing `Execution failed for task ':common:compileKotlinMetadata'` because the `openrndr-math` doesn't seem to resolve (but works when running, on both Android and MacOS)
 
 # How can I help?
+## Addressing issues
  * Check the know issue list and tackle one if you feel like
+
+## Creating a simple Game
  * Create a simple game and provide feedback on your experience.
    * RPG Game: Zelda-like
    * Fight Game: Street fighter-like
    * Puzzle Game: Candy crush-like
    * Platform Game: Mario-like
+
+## Tackle the roadmap
+They are still a lot of work to get to a complete GDK. 
+
+The top 2 priorities are:
+   * touch controllers for Android and touch screens. Please see see `UIVirtualArrowController`
+   * Physic/Gravity engine this will help to build cool Platform games where the character need to jump and land on piece of decor.
 
 # Examples
 ## Platform Game mario-like
