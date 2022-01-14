@@ -21,8 +21,7 @@ import me.sonique.common.core.CGDKObject
 import me.sonique.common.core.ImageCGDKObject
 import me.sonique.common.score.ScoreManager
 import me.sonique.common.scroller.HorizontalAutoScroll
-import me.sonique.common.scroller.HorizontalKeyboardScroll
-import me.sonique.common.scroller.HorizontalScroll
+import me.sonique.common.mariodemo.MarioHorizontalKeyboardScroll
 import me.sonique.common.scroller.VerticalAutoScroll
 import org.openrndr.math.Vector2
 import rightShift
@@ -67,10 +66,18 @@ class Mario: ImageCGDKObject(
 
     override fun onKeyRight() {
         print("right Key Mario \n")
-        this.mutablePosition.value = Vector2(
-            this.mutablePosition.value.x + 7,
-            this.mutablePosition.value.y
-        )
+        if(!isHalfOrOverScreen()) {
+            this.mutablePosition.value = Vector2(
+                this.mutablePosition.value.x + 7,
+                this.mutablePosition.value.y
+            )
+        }
+    }
+
+    fun isHalfOrOverScreen(): Boolean {
+        // Mario is Half screen if his midle pixels (this.mutableSize.value.x/2)
+        // are other half screens (WINDOW_SIZE.width/2)
+        return this.mutablePosition.value.x - (this.mutableSize.value.x/2) > GAME_SIZE.width/2
     }
 }
 
@@ -96,8 +103,10 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
     private val rightActionListener = RightActionListener()
     private val leftActionListener = LeftActionListener()
 
+    private val mario = Mario()
+
     private val F_Scroll = 60
-    private val horizontalFrontScroll = HorizontalAutoScroll(speed = F_Scroll)
+    private val horizontalFrontScroll = MarioHorizontalKeyboardScroll(speed = F_Scroll, mario = mario)
     private val horizontalMediumScroll = HorizontalAutoScroll(speed = 2)
 
     private val verticalCloudMediumScroll = VerticalAutoScroll(speed = 2)
@@ -110,10 +119,13 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
         val directionGameController = DirectionGameController(
             leftCallback = {
                 leftActionListener.onAction()
+                horizontalFrontScroll.onKeyLeft()
             }, rightCallback = {
                 rightActionListener.onAction()
+                horizontalFrontScroll.onKeyRight()
             }, upCallback = {
                 upActionListener.onAction()
+
             }, downCallback = {
                 
             })
@@ -172,7 +184,7 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
             this.addGObject(grass)
         }
 
-        val mario = Mario()
+
         mario.mutablePosition.value = placementHelper.toBottomCenter(mario)
         mario.mutablePosition.value = placementHelper.putObjectAOnTopB(mario, floor)
         upActionListener.addObject(mario)
@@ -184,7 +196,7 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
     }
 
     fun update() {
-        horizontalFrontScroll.update()
+        //horizontalFrontScroll.update()
         horizontalMediumScroll.update()
         horizontalBackScroll.update()
         verticalCloudMediumScroll.update()

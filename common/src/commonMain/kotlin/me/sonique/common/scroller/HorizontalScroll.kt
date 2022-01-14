@@ -19,7 +19,7 @@ abstract class HorizontalScroll(
     var direction: Direction = Direction.LEFT,
 ) {
 
-    private var objectList: MutableList<CGDKObject> = arrayListOf()
+    private var objectList: MutableList<CGDKObject> = mutableListOf()
 
     /**
      * addObject
