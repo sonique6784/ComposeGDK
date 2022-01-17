@@ -26,8 +26,11 @@ fun GameImage(
                 gameObject2.mutablePosition.value.y.dp
             )
 
-
-    val bitmap = getImageBitmap(gameObject2.imageFileName) ?: return
+    val bitmap = getImageBitmap(gameObject2.imageFileName) 
+    if(bitmap == null) { 
+        print("Image ${gameObject2.imageFileName} NOT FOUND")
+        return 
+    }
     Box(mod) {
         if (gameObject2.isTexture) {
             Texture(gameObject2.imageFileName, CGDKObject = gameObject2)

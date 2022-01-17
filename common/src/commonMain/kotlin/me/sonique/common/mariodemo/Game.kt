@@ -87,13 +87,7 @@ fun Game() {
         ) {
 
 
-            game.gameObjects.forEach {
-                when (it) {
-                    // Depending on the type of GameObject, apply different processing
-                    is ImageCGDKObject -> GameImage(it)
-                    else -> Unit
-                }
-            }
+            game.render()
 
             //UIVirtualArrowController(game.getDirectionalController())
             //UIJoystickController(game.getDirectionalController())
