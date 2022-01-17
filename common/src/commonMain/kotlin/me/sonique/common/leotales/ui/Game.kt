@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import me.sonique.common.graphic.GameCanvas
 import me.sonique.common.leotales.game.LeoTales
 
+
 @Composable
 @ExperimentalComposeUiApi
 fun Game() {
@@ -21,7 +22,7 @@ fun Game() {
 
 
     Column(modifier = Modifier.fillMaxHeight()) {
-        Row(modifier = Modifier.fillMaxWidth(),
+        Row(modifier = Modifier.fillMaxWidth().height(42.dp),
             horizontalArrangement = Arrangement.SpaceBetween) {
             Text(game.gameTitle.value, modifier = Modifier.padding(8.dp))
             Text(
@@ -31,7 +32,7 @@ fun Game() {
             Text("Energy: ${game.energy.value}", modifier = Modifier.padding(8.dp))
         }
         GameCanvas {
-
+            game.render()
         }
     }
 }
