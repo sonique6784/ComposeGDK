@@ -1,4 +1,4 @@
-package me.sonique.common
+package me.sonique.common.mariodemo
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -8,6 +8,8 @@ import higher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import me.sonique.common.AnimationHelper
+import me.sonique.common.Placement
 import me.sonique.common.collision.CollisionHelper
 import me.sonique.common.collision.OnCollision
 import me.sonique.common.controller.DirectionGameController
@@ -21,7 +23,6 @@ import me.sonique.common.core.CGDKObject
 import me.sonique.common.core.ImageCGDKObject
 import me.sonique.common.score.ScoreManager
 import me.sonique.common.scroller.HorizontalAutoScroll
-import me.sonique.common.mariodemo.MarioHorizontalKeyboardScroll
 import me.sonique.common.scroller.VerticalAutoScroll
 import org.openrndr.math.Vector2
 import rightShift

@@ -1,4 +1,4 @@
-package me.sonique.common
+package me.sonique.common.mariodemo
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,10 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.dp
+import me.sonique.common.GameImage
 import me.sonique.common.controller.KeyboardDirectionControllerHelper
 import me.sonique.common.core.ImageCGDKObject
 import me.sonique.common.graphic.GameCanvas
-import me.sonique.common.graphic.UIVirtualArrowController
 
 @Composable
 @ExperimentalComposeUiApi

@@ -1,6 +1,5 @@
 package me.sonique.common.mariodemo
 
-import me.sonique.common.Mario
 import me.sonique.common.controller.action.LeftActionListener
 import me.sonique.common.controller.action.RightActionListener
 import me.sonique.common.scroller.HorizontalScroll
