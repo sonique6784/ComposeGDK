@@ -8,50 +8,53 @@ class CollisionHelper {
 
     companion object {
 
-        const val LIMIT = 100
+        private fun isEstablishedColliding(mainObject: CGDKObject, goA: CGDKObject): Boolean {
+            return goA.mutablePosition.value.distanceTo(mainObject.mutablePosition.value) < (goA.mutableSize.value.y / 2 + mainObject.mutableSize.value.y / 2)
+        }
 
-        private val collisionsHash = hashMapOf<Pair<CGDKObject, CGDKObject>, Long>()
+        fun isColliding(mainObject: CGDKObject, goA: CGDKObject):Boolean {
+            return (mainObject.mutablePosition.value.x < goA.mutablePosition.value.x + goA.mutableSize.value.y &&
+            mainObject.mutablePosition.value.x + mainObject.mutableSize.value.y > goA.mutablePosition.value.x &&
+            mainObject.mutablePosition.value.y < goA.mutablePosition.value.y + goA.mutableSize.value.x &&
+            mainObject.mutableSize.value.x + mainObject.mutablePosition.value.y > goA.mutablePosition.value.y)
+        }
 
-        fun detectCollisions(objectList: List<CGDKObject>): List<Pair<CGDKObject, CGDKObject>> {
+        fun detectCollision(mainObject: CGDKObject, objectList: List<CGDKObject>): List<CGDKObject> {
+            val collisions = mutableListOf<CGDKObject>()
+            objectList.forEach { goA ->
+                if (isColliding(mainObject, goA)) {
+                    collisions.add(goA)
+                    if (mainObject is OnCollision) {
+                        mainObject.onCollision(goA)
+                    }
+                }
+            }
+            return collisions
+        }
 
-            val time = Clock.System.now().toEpochMilliseconds()
+        fun detectCollisionsWithList(objectList: List<CGDKObject>): List<Pair<CGDKObject, CGDKObject>> {
+
+            val collisionsHash = hashSetOf<Pair<CGDKObject, CGDKObject>>()
 
             objectList.forEach { goA ->
                 objectList.forEach { goB ->
                     if (goA != goB) {
                         // Overlap means the center of the game objects are closer together than the sum of their radiuses
-                        if (goA.mutablePosition.value.distanceTo(goB.mutablePosition.value) < (goA.mutableSize.value.y / 2 + goB.mutableSize.value.y / 2)) {
+                        if (isColliding(goA, goB)) {
                             val collisionPair = Pair(goA, goB)
                             val collisionPair2 = Pair(goB, goA)
-                            if (!collisionsHash.containsKey(collisionPair)
-                                && !collisionsHash.containsKey(collisionPair2)) {
-                                //if(!collisions.contains(collisionPair) && !collisions.contains(collisionPair2)) {
-                                collisionsHash.put(Pair(goA, goB), time)
-                                if (goA is OnCollision) {
-                                    goA.onCollision(goB)
-                                    //goA.onCollision(goB, goA)
-                                }
+                            if (!collisionsHash.contains(collisionPair)
+                                && !collisionsHash.contains(collisionPair2)) {
+                                collisionsHash.add(Pair(goA, goB))
                             }
-//                            if(goB is OnCollision) {
-//                                goB.onCollision(goA)
-//                                //goB.onCollision(goA, goB)
-//                            }
                         }
                     }
                 }
+
+                // TODO: add iterator and remove goA once processed
             }
 
-            // purge old collision
-            val collisionIterator = collisionsHash.iterator()
-            while (collisionIterator.hasNext()) {
-                val collision = collisionIterator.next()
-                // we keep collision only for LIMIT, this is to prevent double count of the same collision.
-                if (time - collision.value > LIMIT) {
-                    collisionIterator.remove()
-                }
-            }
-
-            return collisionsHash.keys.toMutableList()
+            return collisionsHash.toMutableList()
         }
     }
 }

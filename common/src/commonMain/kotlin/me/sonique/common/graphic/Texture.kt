@@ -34,7 +34,7 @@ fun Texture(fileName: String, modifier: Modifier = Modifier, CGDKObject: CGDKObj
                 0.0f,
                 0.0f,
                 CGDKObject.mutableSize.value.x.toFloat(),
-                CGDKObject.mutableSize.value.y.toFloat() * 2
+                CGDKObject.mutableSize.value.y.toFloat()
             ) {
                 it.nativeCanvas.drawPaint(paint)
             }

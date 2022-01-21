@@ -38,16 +38,17 @@ val WINDOW_SIZE = IntSize(GAME_SIZE.width, GAME_SIZE.height + 64)
 class QuestionMarkBox() : ImageCGDKObject(
     imageFileName = "box.jpg",
     size = Vector2(25.dp.value.toDouble(), 25.dp.value.toDouble())
-), OnCollision {
-    private val mainScope = CoroutineScope(Dispatchers.Main)
-    override fun onCollision(object2: CGDKObject) {
-        if(object2 is Mario) {
-            mainScope.launch {
-                ScoreManager.ScoreManager.score.emit(1)
-            }
-        }
-    }
-}
+)
+// ), OnCollision {
+//     private val mainScope = CoroutineScope(Dispatchers.Main)
+//     override fun onCollision(object2: CGDKObject) {
+//         if(object2 is Mario) {
+//             mainScope.launch {
+//                 ScoreManager.ScoreManager.score.emit(1)
+//             }
+//         }
+//     }
+// }
 
 class Mario: ImageCGDKObject(
     imageFileName = "mario.jpg",
@@ -113,7 +114,11 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
     private val verticalCloudMediumScroll = VerticalAutoScroll(speed = 2)
     private val horizontalBackScroll = HorizontalAutoScroll(speed = 5)
 
+    private val questionMarkBoxes = mutableListOf<QuestionMarkBox>()
+
     val score = mutableStateOf(0)
+
+    private val mainScope = CoroutineScope(Dispatchers.Main)
 
     init {
 
@@ -174,6 +179,7 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
             questionMarkBox.mutablePosition.value = centerRight
             horizontalFrontScroll.addObject(questionMarkBox)
             this.addGObject(questionMarkBox)
+            this.questionMarkBoxes.add(questionMarkBox)
         }
 
         for(i in 0 .. 15) {
@@ -196,12 +202,25 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
 
     }
 
+    private val recentCollisions = mutableListOf<CGDKObject>()
+
     fun update() {
         //horizontalFrontScroll.update()
         horizontalMediumScroll.update()
         horizontalBackScroll.update()
         verticalCloudMediumScroll.update()
-        CollisionHelper.detectCollisions(this.gameObjects)
+        val collisions = CollisionHelper.detectCollision(mario, this.questionMarkBoxes)
+        if(collisions.isNotEmpty()) {
+            // we assume 1 collision at the time for now
+            if(!recentCollisions.contains(collisions.first())) {
+                mainScope.launch {
+                    ScoreManager.ScoreManager.score.emit(1)
+                }
+                recentCollisions.add(collisions.first())
+            }
+        } else {
+            recentCollisions.clear()
+        }
     }
 
     fun score(): MutableState<Int> {

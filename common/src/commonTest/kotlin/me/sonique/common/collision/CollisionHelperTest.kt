@@ -4,12 +4,38 @@ import org.openrndr.math.Vector2
 import kotlin.test.Test
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
+import kotlin.test.assertFalse
 
 class CollisionHelperTest {
 
 
     @BeforeTest
     fun setup() {
+
+    }
+
+    @Test
+    fun detectCollisionsExistsTest() {
+        /*
+        ╔═══╗
+        ║ ┌───┐
+        ╚═══╝ │
+          └───┘
+         */
+
+        val objectA = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(50.0, 50.0)
+        )
+
+        val objectB = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(100.0, 100.0)
+        )
+
+        val collision = CollisionHelper.isColliding(objectA, objectB)
+        assertTrue(collision, "Collision should be detected")
 
     }
 
@@ -32,11 +58,55 @@ class CollisionHelperTest {
             position = Vector2(100.0, 100.0)
         )
 
-        val objectList = listOf<CGDKObject>(objectA, objectB)
-        val collisions = CollisionHelper.detectCollisions(objectList)
+        val collision = CollisionHelper.isColliding(objectA, objectB)
+        assertTrue(collision, "Collision should be detected")
+    }
 
-        assertEquals(1, collisions.size, "Collision count invalid")
+    @Test
+    fun detectCollisionExists2Test() {
+        /*
+        ╔═══╗
+        ║ ┌───┐
+        ║ └───┘
+        ╚═══╝ 
+          
+         */
 
+        val objectA = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(50.0, 50.0)
+        )
+
+        val objectB = CGDKObject(
+            size = Vector2(100.0, 50.0),
+            position = Vector2(60.0, 60.0)
+        )
+
+        val collision = CollisionHelper.isColliding(objectA, objectB)
+        assertTrue(collision, "Collision should be detected")
+    }
+
+    @Test
+    fun detectCollisionExistsWhenObjectOverlapExactlyTest() {
+        /*
+        ╔═══╗
+        ║   ║
+        ╚═══╝
+          
+         */
+
+        val objectA = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(100.0, 100.0)
+        )
+
+        val objectB = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(100.0, 100.0)
+        )
+
+        val collision = CollisionHelper.isColliding(objectA, objectB)
+        assertTrue(collision, "Collision should be detected")
     }
 
     @Test
@@ -61,15 +131,13 @@ class CollisionHelperTest {
             position = Vector2(200.0, 200.0)
         )
 
-        val objectList = listOf(objectA, objectB)
-        val collisions = CollisionHelper.detectCollisions(objectList)
-
-        assertEquals(0, collisions.size, "No collision should be found")
+        val collision = CollisionHelper.isColliding(objectA, objectB)
+        assertFalse(collision, "Collision should not be detected")
     }
 
 
     @Test
-    fun detectCollisionDoesNotExistsWithOverlapingALittleObjectsTest() {
+    fun detectCollisionExistsWithOverlapingBottomRightTest() {
         /*
         ╔═══╗
         ║   ║
@@ -85,12 +153,79 @@ class CollisionHelperTest {
 
         val objectB = CGDKObject(
             size = Vector2(100.0, 100.0),
-            position = Vector2(130.0, 130.0)
+            position = Vector2(150.0, 150.0)
         )
 
-        val objectList = listOf(objectA, objectB)
-        val collisions = CollisionHelper.detectCollisions(objectList)
+        val collision = CollisionHelper.isColliding(objectA, objectB)
+        assertFalse(collision, "Collision should not be detected")
+    }
 
-        assertEquals(0, collisions.size, "No collision should be found")
+    @Test
+    fun detectCollisionExistsWithOverlapingBottomLeftTest() {
+        /*
+            ╔═══╗
+            ║   ║ 
+        ┌───╚═══╝
+        │   │
+        └───┘
+         */
+
+        val objectA = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(50.0, 50.0)
+        )
+
+        val objectB = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(-50.0, 150.0)
+        )
+
+        val collision = CollisionHelper.isColliding(objectA, objectB)
+        assertFalse(collision, "Collision should not be detected")
+    }
+
+    @Test
+    fun detectCollisionExistsWithOverlapingRightEdge() {
+        /*
+            ╔═══╗───┐
+            ║   ║   │
+            ╚═══╝───┘
+         */
+
+        val objectA = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(50.0, 50.0)
+        )
+
+        val objectB = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(150.0, 50.0)
+        )
+
+        val collision = CollisionHelper.isColliding(objectA, objectB)
+        assertFalse(collision, "Collision should not be detected")
+    }
+
+    @Test
+    fun detectCollisionExistsWhenIsInsideTheOther() {
+        /*
+            ╔══════╗
+            ║ ┌──┐ ║ 
+            ║ └──┘ ║
+            ╚══════╝
+         */
+
+        val objectA = CGDKObject(
+            size = Vector2(100.0, 100.0),
+            position = Vector2(50.0, 50.0)
+        )
+
+        val objectB = CGDKObject(
+            size = Vector2(25.0, 25.0),
+            position = Vector2(60.0, 60.0)
+        )
+
+        val collision = CollisionHelper.isColliding(objectA, objectB)
+        assertTrue(collision, "Collision should not be detected")
     }
 }
