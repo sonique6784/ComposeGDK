@@ -13,32 +13,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import me.sonique.common.core.ImageCGDKObject
 
+/**
+ * GameImage
+ * renders an ImageCGDKObject
+ * 
+ * @param imageGameObject: ImageCGDKObject
+ * @param modifier: Modifier
+ */
 @Composable
 fun GameImage(
-    gameObject2: ImageCGDKObject,
+    imageGameObject: ImageCGDKObject,
     modifier: Modifier = Modifier
 ) {
       val mod = modifier
-            .height(gameObject2.mutableSize.value.y.dp)
-            .width(gameObject2.mutableSize.value.x.dp)
+            .height(imageGameObject.mutableSize.value.y.dp)
+            .width(imageGameObject.mutableSize.value.x.dp)
             .offset(
-                gameObject2.mutablePosition.value.x.dp,
-                gameObject2.mutablePosition.value.y.dp
+                imageGameObject.mutablePosition.value.x.dp,
+                imageGameObject.mutablePosition.value.y.dp
             )
 
-    val bitmap = getImageBitmap(gameObject2.imageFileName) 
+    val bitmap = getImageBitmap(imageGameObject.imageFileName) 
     if(bitmap == null) { 
-        print("Image ${gameObject2.imageFileName} NOT FOUND")
+        print("Image ${imageGameObject.imageFileName} NOT FOUND")
         return 
     }
     Box(mod) {
-        if (gameObject2.isTexture) {
-            Texture(gameObject2.imageFileName, CGDKObject = gameObject2)
+        if (imageGameObject.isTexture) {
+            Texture(imageGameObject = imageGameObject)
         } else {
             Image(
-                //painterResource(gameObject2.imageFileName),
                 bitmap,
-                contentDescription = gameObject2.imageFileName
+                contentDescription = imageGameObject.imageFileName
             )
         }
     }

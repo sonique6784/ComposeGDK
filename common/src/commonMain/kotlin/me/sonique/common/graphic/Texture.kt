@@ -9,16 +9,22 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
-import me.sonique.common.core.CGDKObject
+import me.sonique.common.core.ImageCGDKObject
 
+/**
+ * Texture
+ * render a bitmap across the surface
+ * 
+ * @param imageGameObject: ImageCGDKObject - image Game object to render
+ * @param modifier: Modifier
+ */
 @Composable
-fun Texture(fileName: String, modifier: Modifier = Modifier, CGDKObject: CGDKObject) {
+fun Texture(imageGameObject: ImageCGDKObject, modifier: Modifier = Modifier) {
 
-    val bitmap = getImageBitmap(fileName)
+    val bitmap = getImageBitmap(imageGameObject.imageFileName)
 
     if (bitmap == null) return
 
-//ImageBitmap.Companion?.imageResource
     Canvas(
         modifier = modifier
     ) {
@@ -33,8 +39,8 @@ fun Texture(fileName: String, modifier: Modifier = Modifier, CGDKObject: CGDKObj
             clipRect(
                 0.0f,
                 0.0f,
-                CGDKObject.mutableSize.value.x.toFloat(),
-                CGDKObject.mutableSize.value.y.toFloat()
+                imageGameObject.mutableSize.value.x.toFloat(),
+                imageGameObject.mutableSize.value.y.toFloat()
             ) {
                 it.nativeCanvas.drawPaint(paint)
             }

@@ -204,7 +204,7 @@ class MarioDemo : CGDKGame(), ProvideDirectionalController {
 
     private val recentCollisions = mutableListOf<CGDKObject>()
 
-    fun update() {
+    override fun update() {
         //horizontalFrontScroll.update()
         horizontalMediumScroll.update()
         horizontalBackScroll.update()
