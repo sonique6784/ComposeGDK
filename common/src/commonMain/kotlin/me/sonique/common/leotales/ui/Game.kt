@@ -20,37 +20,8 @@ import me.sonique.common.leotales.game.LeoTales
 fun Game() {
 
     val game = remember { LeoTales() }
-    var lastFrame = 0L
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            // We want to refresh the screen on a regular basis, so here we use a callback every millisecond
-            withFrameMillis {
-                // to prevent too many frame drawn and optimise a bit the performance,
-                // we aim for ~60fps
-                if(it - lastFrame >= 15 ) { // aiming for 60Hz
-                    // if(SHOW_FPS) {
-                    //     if (lastSecond == 0L) {
-                    //         lastSecond = it
-                    //     }
-                    //     frameCount++
-
-                    //     if (it - lastSecond >= 1000) {
-                    //         lastSecond = it
-                    //         print("frame per second : $frameCount\n")
-                    //         fpsMutable.value = frameCount
-                    //         frameCount = 0
-                    //     }
-                    // }
-
-                    lastFrame = it
-
-                    game.update()
-                }
-            }
-        }
-    }
-
+    
+    game.startRefresher()
 
     Column(modifier = Modifier.fillMaxHeight()) {
         Row(modifier = Modifier.fillMaxWidth().height(42.dp),
