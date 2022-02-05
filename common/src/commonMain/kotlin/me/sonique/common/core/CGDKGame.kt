@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import me.sonique.common.controller.GameController
 import androidx.compose.runtime.Composable
-import me.sonique.common.GameImage
+import me.sonique.common.graphic.GameImage
 import androidx.compose.runtime.*
 
 /**

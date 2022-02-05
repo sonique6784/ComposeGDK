@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "1.0.0-rc3"
+    id("org.jetbrains.compose") version "1.0.0"
     id("com.android.library")
     id("maven-publish")
 }
@@ -45,7 +45,6 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.openrndr:openrndr-math:0.3.58")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
                 api(compose.runtime)
                 api(compose.foundation)
@@ -63,7 +62,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.4.0")
+                api("androidx.appcompat:appcompat:1.4.1")
                 api("androidx.core:core-ktx:1.7.0")
                 api(Compose.ui)
                 api(Compose.runtime)
@@ -83,9 +82,6 @@ kotlin {
         }
         val desktopTest by getting
     }
-//    dependencies {
-//        commonMainImplementation("org.openrndr:openrndr-math:0.3.58")
-//    }
 }
 
 android {

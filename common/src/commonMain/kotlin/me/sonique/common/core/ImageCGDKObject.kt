@@ -1,6 +1,6 @@
 package me.sonique.common.core
 
-import org.openrndr.math.Vector2
+import me.sonique.common.core.Vector2
 
 /**
  * ImageCGDKObject

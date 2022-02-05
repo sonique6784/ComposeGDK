@@ -1,4 +1,4 @@
-package me.sonique.common
+package me.sonique.common.graphic
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import me.sonique.common.core.ImageCGDKObject
+import me.sonique.common.getImageBitmap
 
 /**
  * Texture
@@ -29,7 +30,8 @@ fun Texture(imageGameObject: ImageCGDKObject, modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
 
-        val paint = Paint().asFrameworkPaint().apply {
+        val paint = Paint().asFrameworkPaint()
+            .apply {
             isAntiAlias = true
             shader =
                 ImageShader(bitmap, TileMode.Repeated, TileMode.Repeated)

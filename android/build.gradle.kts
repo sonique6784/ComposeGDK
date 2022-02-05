@@ -16,8 +16,6 @@ repositories {
 dependencies {
     implementation(project(":common"))
     implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("org.openrndr:openrndr-math:0.3.58")
-
 }
 
 android {

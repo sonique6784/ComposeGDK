@@ -1,7 +1,7 @@
 package me.sonique.common.core
 
 import androidx.compose.runtime.mutableStateOf
-import org.openrndr.math.Vector2
+import me.sonique.common.core.Vector2
 
 /**
  * CGDKObject

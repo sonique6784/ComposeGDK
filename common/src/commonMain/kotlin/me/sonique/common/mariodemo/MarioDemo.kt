@@ -4,9 +4,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import higher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.launch
 import me.sonique.common.AnimationHelper
 import me.sonique.common.Placement
@@ -24,8 +24,7 @@ import me.sonique.common.core.ImageCGDKObject
 import me.sonique.common.score.ScoreManager
 import me.sonique.common.scroller.HorizontalAutoScroll
 import me.sonique.common.scroller.VerticalAutoScroll
-import org.openrndr.math.Vector2
-import rightShift
+import me.sonique.common.core.Vector2
 import toVector2
 import kotlin.random.Random
 
@@ -55,7 +54,18 @@ class Mario: ImageCGDKObject(
     size = Vector2(50.dp.value.toDouble(), 30.dp.value.toDouble())
 ), UpActionListener.IOnKeyUp, LeftActionListener.IOnKeyLeft, RightActionListener.IOnKeyRight {
     override fun onKeyUp() {
-        AnimationHelper.jump(listOf(this), 45, AnimationHelper.SPEED_NORMAL)
+        this.jump()
+    }
+
+    private var jumping = Semaphore(permits = 1)
+    private val mainScope = CoroutineScope(Dispatchers.Main)
+    fun jump() {
+        mainScope.launch {
+            if(jumping.tryAcquire()) {
+                AnimationHelper.jump(listOf(this@Mario), distance = 45, speed = AnimationHelper.SPEED_NORMAL)
+                jumping.release()
+            }// else skip jump
+        }
     }
 
     override fun onKeyLeft() {

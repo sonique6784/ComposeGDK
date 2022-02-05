@@ -89,7 +89,14 @@ Ideally the images should be place in a single folder accessible from both Deskt
 
 # Known Issues
 Any help on the following will be appreciated:
- * unable to build the library with `./gradlew build`, it's showing `Execution failed for task ':common:compileKotlinMetadata'` because the `openrndr-math` doesn't seem to resolve (but works when running, on both Android and MacOS)
+ * unable to build the library with `./gradlew build`, it's showing `Execution failed for task ':common:compileKotlinMetadata'` because the some `Paint` attributes can't be resolved (but works when running, on both Android and MacOS)
+   ``` 
+   Texture.kt
+   Unresolved reference: isAntiAlias
+   Unresolved reference: shader
+   Unresolved reference: drawPaint
+   Unresolved reference: reset
+   ```
 
 # How can I help?
 ## Addressing issues

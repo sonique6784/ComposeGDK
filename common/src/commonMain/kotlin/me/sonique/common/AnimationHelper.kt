@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.sonique.common.core.CGDKObject
-import org.openrndr.math.Vector2
+import me.sonique.common.core.Vector2
 import kotlin.math.ceil
 import kotlinx.datetime.Clock
 
