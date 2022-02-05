@@ -1,10 +1,10 @@
 package me.sonique.common.controller
 
 class DirectionGameController(
-    private val leftCallback: () -> Unit,
-    private val rightCallback: () -> Unit,
-    private val upCallback: () -> Unit,
-    private val downCallback: () -> Unit,
+    private val leftCallback: () -> Unit = {},
+    private val rightCallback: () -> Unit = {},
+    private val upCallback: () -> Unit = {},
+    private val downCallback: () -> Unit = {},
 ) : IDirectionGameController {
     override fun left() {
         leftCallback.invoke()

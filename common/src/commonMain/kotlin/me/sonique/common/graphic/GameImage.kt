@@ -32,6 +32,7 @@ fun GameImage(
                 imageGameObject.mutablePosition.value.x.dp,
                 imageGameObject.mutablePosition.value.y.dp
             )
+            //.background(Color(0x88ff0000))
 
     val bitmap = getImageBitmap(imageGameObject.imageFileName) 
     if(bitmap == null) { 

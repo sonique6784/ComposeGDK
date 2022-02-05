@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import me.sonique.common.core.CGDKObject
 import org.openrndr.math.Vector2
 import kotlin.math.ceil
-
+import kotlinx.datetime.Clock
 
 class AnimationHelper {
     companion object {
@@ -19,11 +19,10 @@ class AnimationHelper {
 
         private val mainScope = CoroutineScope(Dispatchers.Main)
         private const val FRAME_LENGTH = 16L // 60Hz
-        fun jump(objectList: List<CGDKObject>, distance: Int, speed: Int) {
-
+        suspend fun jump(objectList: List<CGDKObject>, distance: Int, speed: Int) {
 
             val duration = distance.toDouble() / speed.toDouble() * 1000.0
-            val stepsCount = ceil(duration / FRAME_LENGTH).toInt()
+            val stepsCount = ceil(duration / FRAME_LENGTH).toInt() / 2
             val stepSize = distance / stepsCount
 
             objectList.forEach { gameObject ->
@@ -42,6 +41,33 @@ class AnimationHelper {
                         )
                         delay(FRAME_LENGTH)
                     }
+                }
+            }
+        }
+
+        suspend fun jump2(objectList: List<CGDKObject>, distance: Int, speed: Int) {
+
+            val durationJump = distance.toDouble() / speed.toDouble() * 1000.0 * 0.25
+            val durationFly = distance.toDouble() / speed.toDouble() * 1000.0 * 0.75            
+
+            val stepsCount = ceil(durationJump / FRAME_LENGTH).toInt() 
+            val stepSize = distance / stepsCount
+           
+            objectList.forEach { gameObject ->
+                for (i in 0..stepsCount) {
+                    gameObject.mutablePosition.value = Vector2(
+                        gameObject.mutablePosition.value.x,
+                        gameObject.mutablePosition.value.y - stepSize
+                    )
+                    delay(FRAME_LENGTH)
+                }
+                delay(durationFly.toLong())
+                for (i in 0..stepsCount) {
+                    gameObject.mutablePosition.value = Vector2(
+                        gameObject.mutablePosition.value.x,
+                        gameObject.mutablePosition.value.y + stepSize
+                    )
+                    delay(FRAME_LENGTH)
                 }
             }
         }

@@ -16,4 +16,9 @@ open class ImageCGDKObject(
     val isTexture: Boolean = false,
     size: Vector2 = Vector2(0.0, 0.0),
     position: Vector2 = Vector2(0.0, 0.0)
-) : CGDKObject(size, position)
+) : CGDKObject(size, position) {
+
+    override fun toString(): String {
+        return "$imageFileName ; ${super.toString()}"
+    }
+}
