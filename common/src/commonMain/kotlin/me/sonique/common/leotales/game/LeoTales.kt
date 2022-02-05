@@ -9,15 +9,16 @@ import me.sonique.common.collision.CollisionHelper
 import me.sonique.common.core.CGDKObject
 import androidx.compose.ui.unit.dp
 import toVector2
-import rightShift
-import higher
+import me.sonique.common.controller.DirectionGameController
+import me.sonique.common.controller.IDirectionGameController
+import me.sonique.common.controller.ProvideDirectionalController
 
 // 480 width, 320 height 
 val WINDOW_SIZE = IntSize(480, 320)
 // the Game Size is window size minus the Status bar
 val GAME_SIZE = IntSize(WINDOW_SIZE.width, WINDOW_SIZE.height - 64)
 
-class LeoTales : CGDKGame() {
+class LeoTales : CGDKGame(), ProvideDirectionalController {
 
     val gameTitle = mutableStateOf("Leo Tales")
     val level = mutableStateOf(1)
@@ -31,12 +32,21 @@ class LeoTales : CGDKGame() {
     private val obstacles = mutableListOf(obstacle)
     private val foods = mutableListOf(food)
 
-    private val horizontalAutoScroll = HorizontalAutoScroll(speed = 5)
+    private val horizontalAutoScroll = HorizontalAutoScroll(speed = 130)
 
 
     val placementHelper = Placement(GAME_SIZE.toVector2())
 
     init {
+
+        val directionGameController = DirectionGameController(
+            upCallback = {
+                leo.jump()
+            })
+
+        this.gameControllers.add(directionGameController)
+
+
         decor.mutablePosition.value = placementHelper.toTopLeft()
         this.addGObject(decor)
 
@@ -61,6 +71,11 @@ class LeoTales : CGDKGame() {
 
         // Check if Leo enter in collision with an Obstacle
         val obstaclesCollisions = CollisionHelper.detectCollision(leo, this.obstacles)
+        if(obstaclesCollisions.size > 0) {
+            println("collision: ${obstaclesCollisions.size}")
+            println("Obs: ${obstaclesCollisions.first().toString()}")
+            println("Leo: ${leo.toString()}")
+        }
         // Check if Leo enter in collision with some Food
         val foodCollisions = CollisionHelper.detectCollision(leo, this.foods)
 
@@ -87,5 +102,9 @@ class LeoTales : CGDKGame() {
                 }
             }
         }        
+    }
+
+    override fun getDirectionalController(): IDirectionGameController {
+        return this.gameControllers.first { it is IDirectionGameController } as IDirectionGameController
     }
 }

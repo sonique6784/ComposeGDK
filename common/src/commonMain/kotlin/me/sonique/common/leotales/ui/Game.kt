@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.*
 import me.sonique.common.graphic.GameCanvas
 import me.sonique.common.leotales.game.LeoTales
-
+import me.sonique.common.controller.KeyboardDirectionControllerHelper
 
 @Composable
 @ExperimentalComposeUiApi
@@ -33,7 +33,9 @@ fun Game() {
             )
             Text("Energy: ${game.energy.value}", modifier = Modifier.padding(8.dp))
         }
-        GameCanvas {
+        GameCanvas(
+            keyboardHandler = KeyboardDirectionControllerHelper(game.getDirectionalController())
+        ) {
             game.render()
         }
     }
