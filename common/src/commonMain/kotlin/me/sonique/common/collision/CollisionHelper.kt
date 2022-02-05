@@ -13,10 +13,12 @@ class CollisionHelper {
         }
 
         fun isColliding(mainObject: CGDKObject, goA: CGDKObject):Boolean {
-            return (mainObject.mutablePosition.value.x < goA.mutablePosition.value.x + goA.mutableSize.value.y &&
-            mainObject.mutablePosition.value.x + mainObject.mutableSize.value.y > goA.mutablePosition.value.x &&
-            mainObject.mutablePosition.value.y < goA.mutablePosition.value.y + goA.mutableSize.value.x &&
-            mainObject.mutableSize.value.x + mainObject.mutablePosition.value.y > goA.mutablePosition.value.y)
+            // 227.5 < 178.5 + 50 = 228.5 -> True
+            // 227.5 + 17 = 244  > 178.5 -> True
+            return (mainObject.mutablePosition.value.x < goA.mutablePosition.value.x + goA.mutableSize.value.x &&
+            mainObject.mutablePosition.value.x + mainObject.mutableSize.value.x > goA.mutablePosition.value.x &&
+            mainObject.mutablePosition.value.y < goA.mutablePosition.value.y + goA.mutableSize.value.y &&
+            mainObject.mutableSize.value.y + mainObject.mutablePosition.value.y > goA.mutablePosition.value.y)
         }
 
         fun detectCollision(mainObject: CGDKObject, objectList: List<CGDKObject>): List<CGDKObject> {

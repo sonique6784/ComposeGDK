@@ -25,12 +25,12 @@ class CollisionHelperTest {
          */
 
         val objectA = CGDKObject(
-            size = Vector2(100.0, 100.0),
+            size = Vector2(90.0, 110.0),
             position = Vector2(50.0, 50.0)
         )
 
         val objectB = CGDKObject(
-            size = Vector2(100.0, 100.0),
+            size = Vector2(120.0, 70.0),
             position = Vector2(100.0, 100.0)
         )
 
@@ -49,12 +49,12 @@ class CollisionHelperTest {
          */
 
         val objectA = CGDKObject(
-            size = Vector2(100.0, 100.0),
+            size = Vector2(110.0, 100.0),
             position = Vector2(50.0, 50.0)
         )
 
         val objectB = CGDKObject(
-            size = Vector2(100.0, 100.0),
+            size = Vector2(100.0, 80.0),
             position = Vector2(100.0, 100.0)
         )
 
@@ -66,14 +66,14 @@ class CollisionHelperTest {
     fun detectCollisionExists2Test() {
         /*
         ╔═══╗
-        ║ ┌───┐
-        ║ └───┘
+        ║ ┌────┐
+        ║ └────┘
         ╚═══╝ 
           
          */
 
         val objectA = CGDKObject(
-            size = Vector2(100.0, 100.0),
+            size = Vector2(50.0, 100.0),
             position = Vector2(50.0, 50.0)
         )
 
