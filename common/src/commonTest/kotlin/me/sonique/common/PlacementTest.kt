@@ -2,7 +2,7 @@ package me.sonique.common
 
 import me.sonique.common.Placement
 import me.sonique.common.core.CGDKObject
-import org.openrndr.math.Vector2
+import me.sonique.common.core.Vector2
 import kotlin.test.Test
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals

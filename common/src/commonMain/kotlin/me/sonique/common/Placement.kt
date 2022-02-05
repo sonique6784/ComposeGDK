@@ -1,7 +1,7 @@
 package me.sonique.common
 
 import me.sonique.common.core.CGDKObject
-import org.openrndr.math.Vector2
+import me.sonique.common.core.Vector2
 
 
 //       y
