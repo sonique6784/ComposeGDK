@@ -11,6 +11,8 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import me.sonique.common.core.ImageCGDKObject
 import me.sonique.common.getImageBitmap
+import me.sonique.common.texture_paint
+
 
 /**
  * Texture
@@ -26,27 +28,30 @@ fun Texture(imageGameObject: ImageCGDKObject, modifier: Modifier = Modifier) {
 
     if (bitmap == null) return
 
-    Canvas(
-        modifier = modifier
-    ) {
+    texture_paint(imageGameObject, bitmap!!, modifier)
 
-        val paint = Paint().asFrameworkPaint()
-            .apply {
-            isAntiAlias = true
-            shader =
-                ImageShader(bitmap, TileMode.Repeated, TileMode.Repeated)
-        }
+    // Canvas(
+    //     modifier = modifier
+    // ) {
 
-        drawIntoCanvas {
-            clipRect(
-                0.0f,
-                0.0f,
-                imageGameObject.mutableSize.value.x.toFloat(),
-                imageGameObject.mutableSize.value.y.toFloat()
-            ) {
-                it.nativeCanvas.drawPaint(paint)
-            }
-        }
-        paint.reset()
-    }
+    //     val paint = Paint().asFrameworkPaint()
+    //         .apply {
+    //         isAntiAlias = true
+    //         shader =
+    //             ImageShader(bitmap, TileMode.Repeated, TileMode.Repeated)
+    //     }
+
+    //     drawIntoCanvas {
+    //         clipRect(
+    //             0.0f,
+    //             0.0f,
+    //             imageGameObject.mutableSize.value.x.toFloat(),
+    //             imageGameObject.mutableSize.value.y.toFloat()
+    //         ) {
+    //             it.nativeCanvas.drawPaint(paint)
+    //         }
+    //     }
+    //     paint.reset()
+    // }
 }
+

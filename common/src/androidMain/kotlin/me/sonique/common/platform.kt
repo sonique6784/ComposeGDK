@@ -1,11 +1,24 @@
 package me.sonique.common
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Canvas
 import android.util.Log
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageShader
+import androidx.compose.ui.graphics.Paint as Paintx
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.runtime.Composable
+import me.sonique.common.core.ImageCGDKObject
+import androidx.compose.foundation.Canvas as Canvasx
 
 class ImageBitmapHelper {
     companion object {
@@ -58,4 +71,31 @@ actual fun getImageBitmap(resourcePath: String): ImageBitmap? {
 
 actual fun log(string: String) {
     Log.w("KMM", string)
+}
+
+@Composable
+actual fun texture_paint(imageGameObject: ImageCGDKObject, bitmap: ImageBitmap,  modifier: Modifier) {
+    Canvasx(
+        modifier = modifier
+    ) {
+
+        val paint = Paintx().asFrameworkPaint()
+            .apply {
+            isAntiAlias = true
+            shader =
+                ImageShader(bitmap, TileMode.Repeated, TileMode.Repeated)
+        }
+
+        drawIntoCanvas {
+            clipRect(
+                0.0f,
+                0.0f,
+                imageGameObject.mutableSize.value.x.toFloat(),
+                imageGameObject.mutableSize.value.y.toFloat()
+            ) {
+                it.nativeCanvas.drawPaint(paint)
+            }
+        }
+        paint.reset()
+    }
 }
